@@ -1,0 +1,10 @@
+django
+pdfminer
+pandas
+nltk
+pyresparser
+celery
+django_celery_results
+redis
+spacy==2.3.5
+eventlet

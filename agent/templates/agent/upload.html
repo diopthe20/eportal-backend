@@ -1,0 +1,7 @@
+<body>
+    <form action="/agent/upload/" enctype="multipart/form-data" method="post">
+      {% csrf_token %}
+    <input name="file_field" type="file" multiple />
+    <input type="submit" />
+  </form>
+</body>
