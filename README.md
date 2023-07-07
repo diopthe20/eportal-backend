@@ -1,0 +1,1 @@
+celery -A eportal worker -l info -P eventlet
