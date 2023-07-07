@@ -1,6 +1,7 @@
 from django.db import models
 from pandas import DataFrame
 
+from agent.models import Agent
 from agent.textraction import read_pdf
 from agent.token_classification import parse
 
@@ -22,6 +23,7 @@ class PDFAgent(models.Model):
     no_of_pages = models.IntegerField(null=True)
     total_experience = models.IntegerField(null=True)
     raw_data = models.TextField(null=True)
+    agent = models.ForeignKey(Agent, on_delete=models.CASCADE, related_name="pdf_agent")
 
     def pdf_to_text(self):
         raw_data = read_pdf(self.pdf_cv_file.path)
@@ -34,7 +36,6 @@ class PDFAgent(models.Model):
         token_data = parse(self.pdf_cv_file.path)
         for key, value in token_data.items():
             self.__setattr__(key, value)
-        self.status = 2
         self.save()
 
     def run(self):

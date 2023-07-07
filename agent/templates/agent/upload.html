@@ -1,7 +1,155 @@
-<body>
-    <form action="/agent/upload/" enctype="multipart/form-data" method="post">
-      {% csrf_token %}
-    <input name="file_field" type="file" multiple />
-    <input type="submit" />
-  </form>
-</body>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=1"
+    />
+    <meta name="HandheldFriendly" content="true" />
+    <title>Eportal</title>
+    {% load static %}
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="{% static 'agent/main.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.css"
+    />
+
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"
+    ></script>
+    <style>
+      .wrapper {
+        background: #39e2b6;
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 9999;
+        text-align: center;
+        left: 0;
+        font-size: 100px;
+        font-family: calibri;
+        color: white;
+        line-height: 100vh;
+      }
+
+      .dropzone {
+        width: 100%;
+        margin: 1%;
+        border: 2px dashed #3498db !important;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body
+    style="overflow-x: hidden"
+    data-new-gr-c-s-check-loaded="14.1114.0"
+    data-gr-ext-installed=""
+  >
+    <div role="main" class="form-all">
+      <ul class="form-section page-section">
+        <li id="cid_1" class="form-input-wide" data-type="control_head">
+          <div class="form-header-group header-large">
+            <div class="header-text httal htvam">
+              <h1 id="header_1" class="form-header" data-component="header">
+                EPortal
+              </h1>
+              <div id="subHeader_1" class="form-subHeader">
+                Empowering to the Automation Process
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="form-line" data-type="control_fileupload" id="id_7">
+          <label
+            class="form-label form-label-top form-label-auto"
+            id="label_7"
+            for="input_7"
+          >
+            Lựa chọn các CV bạn muốn trích xuất dữ liệu
+          </label>
+        </li>
+
+        <form action="/agent/upload/" class="dropzone" id="my-awesome-dropzone">
+          {% csrf_token %}
+
+          <div class="dz-message">
+            <span class="text"> Bấm vào đây để tải lên </span>
+          </div>
+        </form>
+        <li class="form-line" data-type="control_button" id="id_2">
+          <div id="cid_2" class="form-input-wide" data-layout="full">
+            <div
+              data-align="auto"
+              class="form-buttons-wrapper form-buttons-auto jsTest-button-wrapperField"
+            >
+              <button
+                id="clear_all"
+                type="button"
+                class="jf-form-buttons"
+                data-component="button"
+                data-content=""
+              >
+                Clear All
+              </button>
+              <button
+                id="input_2"
+                type="submit"
+                class="form-submit-button submit-button jf-form-buttons jsTest-submitField"
+                data-component="button"
+                data-content=""
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </li>
+        <script>
+          Dropzone.options.myAwesomeDropzone = {
+            autoProcessQueue: false,
+            uploadMultiple: true,
+            parallelUploads: 100,
+            maxFiles: 100,
+            paramName: "file_field",
+
+            init: function () {
+              var myDropzone = this;
+              document
+                .getElementById("clear_all")
+                .addEventListener("click", function (e) {
+                  myDropzone.removeAllFiles();
+                });
+              document
+                .getElementById("input_2")
+                .addEventListener("click", function (e) {
+                  // Make sure that the form isn't actually being sent.
+                  e.preventDefault();
+                  e.stopPropagation();
+                  myDropzone.processQueue();
+                });
+              this.on("successmultiple", function (files, response) {
+                myDropzone.removeFile(files);
+                location.replace(`/agent/`)
+              
+              });
+              this.on("addedfile", (file) => {
+                console.log("A file has been added");
+                let filenameElement =
+                  file.previewElement.querySelector(".dz-filename");
+                filenameElement.style.marginTop = "30px";
+                file.previewElement.addEventListener("click", function () {
+                  myDropzone.removeFile(file);
+                });
+              });
+            },
+          };
+        </script>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css"
+    />
+  </head>
+  <body>
+    <div class="page-body">
+        <div class="container-xl">
+          <div class="card">
+            <div class="card-body">
+              <div id="table-default" class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th><button class="table-sort" data-sort="sort-id">ID</button></th>
+                      <th><button class="table-sort" data-sort="sort-date">Ngày tạo</button></th>
+                      <th><button class="table-sort" data-sort="sort-quantity">Số lượng tệp PDF</button></th>
+                      <th><button class="table-sort" data-sort="sort-status">Trạng thái</button></th>
+                      <th><button class="table-sort" data-sort="sort-action">Hành động</button></th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-tbody">
+                    {% for item in data %}
+                    <tr>
+                      <td class="sort-id">{{item.id}}</td>
+                      <td class="sort-date" data-date="1628071164">{{item.created_at}}</td>
+                      <td class="sort-quantity">{{item.total}}</td>
+                      <td class="sort-status" data-progress="{{item.status}}">
+                          <div class="row align-items-center">
+                              <div class="col-12 col-lg-auto">{{item.status}}%</div>
+                              <div class="col">
+                                  <div class="progress" style="width: 5rem">
+                                      <div class="progress-bar" style="width: {{item.status}}%" role="progressbar" aria-valuenow="{{item.status}}" aria-valuemin="0" aria-valuemax="100" aria-label="{{item.status}}% Complete">
+                                          <span class="visually-hidden">{{item.status}}% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="sort-quantity">
+                            {% if item.status == 100 %}
+                            <button class="btn btn-success btn-sm" onclick="location.replace('/agent/{{item.id}}/export')">Excel</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+                <hr>
+                <center>
+                    <button class="btn btn-primary" onclick="location.replace('/agent/upload/')">Upload</button>
+                </center>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </body>
+</html>
