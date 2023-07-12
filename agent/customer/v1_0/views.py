@@ -8,9 +8,10 @@ from rest_framework.response import Response
 
 from agent.models import Agent
 from agent.pdf.models import PDFAgent
+from agent.pdf_table.models import PdfTable
 from agent.tasks import run_batch, run_extract_table
 from base.pagination import ItemIndexPagination
-from agent.pdf_table.models import PdfTable
+
 from .serializers import AgentSerializer, RetrieveAgentSerializer, UploadPdfSerializer
 
 
@@ -42,20 +43,40 @@ class ListCreateAPIView(ListCreateAPIView):
             files = self.request.FILES
             if task_type == "table_extract":
                 for item in files:
-                    pdf = PDFAgent.objects.create(
-                    pdf_cv_file=files.get(item), agent=new_agent
-                )
+                    pdf = PdfTable.objects.create(
+                        pdf_cv_file=files.get(item), agent=new_agent
+                    )
                 pdf.save()
                 run_extract_table.delay(pdf.id)
                 return Response(data=dict(id=new_agent.id))
+            arr = []
             for item in files:
                 pdf = PDFAgent.objects.create(
                     pdf_cv_file=files.get(item), agent=new_agent
                 )
                 pdf.save()
-                run_batch.delay(pdf.id)
+                arr.append(pdf.id)
+            run_batch.delay(arr, new_agent.id)
             self.id = new_agent.id
             return Response(data=dict(id=new_agent.id))
+
+
+class RetrieveTableDetailAPIView(RetrieveAPIView):
+    serializer_class = RetrieveAgentSerializer
+    permission_classes = ()
+    lookup_field = "id"
+    lookup_url_kwarg = "agent_id"
+    queryset = Agent.objects.all()
+
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related("pdf_table")
+
+    def get(self, request, agent_id, *args, **kwargs):
+        item = Agent.objects.get(id=agent_id)
+        if item.type != "table_extract":
+            return HttpResponseBadRequest()
+        pdf_table = item.pdf_table.first()
+        return Response(data=pdf_table.data)
 
 
 class ExportAgentAPIView(RetrieveAPIView):

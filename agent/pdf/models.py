@@ -29,17 +29,26 @@ class PDFAgent(BaseModel):
     agent = models.ForeignKey(Agent, on_delete=models.CASCADE, related_name="pdf_agent")
 
     def pdf_to_text(self):
-        raw_data = read_pdf(self.pdf_cv_file.path)
-        print("data")
-        self.raw_data = raw_data
-        self.status = 1
-        self.save()
+        try:
+            raw_data = read_pdf(self.pdf_cv_file.path)
+            print("data")
+            self.raw_data = raw_data.replace("\x00", "\uFFFD")
+            self.status = 1
+            self.save()
+        except Exception as e:
+            print(e)
 
     def initial_resume_data(self):
-        token_data = parse(self.pdf_cv_file.path)
-        for key, value in token_data.items():
-            self.__setattr__(key, value)
-        self.save()
+        try:
+            token_data = parse(self.pdf_cv_file.path)
+            for key, value in token_data.items():
+                self.__setattr__(
+                    key,
+                    value.replace("\x00", "\uFFFD"),
+                )
+            self.save()
+        except Exception as e:
+            print(e)
 
     def run(self):
         self.pdf_to_text()
@@ -49,4 +58,3 @@ class PDFAgent(BaseModel):
         pass
         df = DataFrame.from_dict(self)
         return df
-
