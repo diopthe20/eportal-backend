@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "base",
     "user",
     "agent.pdf",
+    "agent.pdf_table",
     "agent",
     "django_celery_results",
     "rest_framework_simplejwt.token_blacklist",

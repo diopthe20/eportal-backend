@@ -8,9 +8,9 @@ from rest_framework.response import Response
 
 from agent.models import Agent
 from agent.pdf.models import PDFAgent
-from agent.tasks import run_batch
+from agent.tasks import run_batch, run_extract_table
 from base.pagination import ItemIndexPagination
-
+from agent.pdf_table.models import PdfTable
 from .serializers import AgentSerializer, RetrieveAgentSerializer, UploadPdfSerializer
 
 
@@ -42,7 +42,12 @@ class ListCreateAPIView(ListCreateAPIView):
             files = self.request.FILES
             if task_type == "table_extract":
                 for item in files:
-                    pass
+                    pdf = PDFAgent.objects.create(
+                    pdf_cv_file=files.get(item), agent=new_agent
+                )
+                pdf.save()
+                run_extract_table.delay(pdf.id)
+                return Response(data=dict(id=new_agent.id))
             for item in files:
                 pdf = PDFAgent.objects.create(
                     pdf_cv_file=files.get(item), agent=new_agent

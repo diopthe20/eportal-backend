@@ -1,5 +1,8 @@
+import camelot
+import pandas
 from django.db import models
 from pandas import DataFrame
+from PyPDF2 import PdfReader, PdfWriter
 
 from agent.models import Agent
 from agent.textraction import read_pdf
@@ -46,3 +49,4 @@ class PDFAgent(BaseModel):
         pass
         df = DataFrame.from_dict(self)
         return df
+
