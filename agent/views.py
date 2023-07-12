@@ -52,11 +52,16 @@ def agent_detail_view(request, id):
 
 
 def task_view(request):
+    '''
+    Docstring
+    ## Hello
+    - List 1
+    - List 2
+    '''
     context = {}
     queryset = Agent.objects.all().prefetch_related("pdf_agent")
     pdf_task = PDFAgent.objects.all()
     for item in queryset:
-        
         pdfs = pdf_task.filter(agent_id=item.id).values("status")
         item.total = len(pdfs)
         if item.total == 0:
@@ -64,9 +69,16 @@ def task_view(request):
             continue
         completed = pdf_task.filter(agent_id=item.id, status=2)
         item.status = int(len(completed) / len(pdfs) * 100)
-        
+
     context["data"] = queryset
     return render(request, "agent/task_view.html", context)
+
+
+def task_status(request, agent_id):
+    all_tasks = PDFAgent.objects.filter(agent_id=agent_id)
+    completed = all_tasks.filter(status=2)
+    status = int(len(completed) / len(all_tasks) * 100)
+    return JsonResponse(data=dict(status=status))
 
 
 def export_to_xlsx(request, id):
@@ -100,9 +112,9 @@ def export_to_xlsx(request, id):
 
     output = StringIO()
     df = pd.DataFrame.from_dict(data)
-    df.to_excel(f"{id}.xlsx")
+    df.to_excel(f"output/{id}.xlsx")
     # create a response
-    file_name = f"{id}.xlsx"
+    file_name = f"output/{id}.xlsx"
     with open(file_name, "rb") as f:
         file_data = f.read()
     response = HttpResponse(

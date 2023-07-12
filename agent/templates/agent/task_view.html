@@ -1,5 +1,8 @@
 <html>
   <head>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
     <link
       rel="stylesheet"
@@ -28,13 +31,42 @@
                       <td class="sort-id">{{item.id}}</td>
                       <td class="sort-date" data-date="1628071164">{{item.created_at}}</td>
                       <td class="sort-quantity">{{item.total}}</td>
+                      <script>
+                        function sleep(ms) {
+                          return new Promise(resolve => setTimeout(resolve, ms));
+                      }
+                        let status_{{item.id}}  = {{item.status}};
+                        function check_status() {
+
+                          if (status_{{item.id}} != 100) {
+                            axios.get("{{item.id}}/status/").then(
+                              (res) => {
+                                if (res.data.status != 100) {
+                                  document.getElementById("percentage_{{item.id}}").textContent = `${res.data.status}%`;
+                                  document.getElementById("progressbar_{{item.id}}").style = `width: ${res.data.status}%`
+                                  document.getElementById("progressbar_{{item.id}}").ariaValueNow = `${res.data.status}%`
+                                  document.getElementById("progressbar_{{item.id}}").ariaLabel = `${res.data.status}% Complete`
+                                  document.getElementById("visual_hidden_{{item.id}}").textContent = `${res.data.status}% Complete`
+                                  sleep(1000);
+                                  check_status();
+                                }
+                                else {
+                                  location.reload();
+                                }
+                                
+                              }
+                            )
+                          } 
+                        }
+                        check_status();
+                      </script>
                       <td class="sort-status" data-progress="{{item.status}}">
                           <div class="row align-items-center">
-                              <div class="col-12 col-lg-auto">{{item.status}}%</div>
+                              <div class="col-12 col-lg-auto" id="percentage_{{item.id}}">{{item.status}}%</div>
                               <div class="col">
                                   <div class="progress" style="width: 5rem">
-                                      <div class="progress-bar" style="width: {{item.status}}%" role="progressbar" aria-valuenow="{{item.status}}" aria-valuemin="0" aria-valuemax="100" aria-label="{{item.status}}% Complete">
-                                          <span class="visually-hidden">{{item.status}}% Complete</span>
+                                      <div class="progress-bar" id="progressbar_{{item.id}}" style="width: {{item.status}}%" role="progressbar" aria-valuenow="{{item.status}}" aria-valuemin="0" aria-valuemax="100" aria-label="{{item.status}}% Complete">
+                                          <span class="visually-hidden" id="visual_hidden_{{item.id}}" >{{item.status}}% Complete</span>
                                         </div>
                                     </div>
                                 </div>

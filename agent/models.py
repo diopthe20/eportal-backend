@@ -1,8 +1,11 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+from base.models import BaseModel
 # Create your models here.
 
-class Agent(models.Model):
-    id = models.AutoField(primary_key=True)
+
+class Agent(BaseModel):
+    type = models.CharField(max_length=150)
     created_at = models.DateTimeField(auto_now_add=True)
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    status = models.IntegerField(default=0)
+    

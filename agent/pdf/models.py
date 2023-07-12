@@ -4,21 +4,21 @@ from pandas import DataFrame
 from agent.models import Agent
 from agent.textraction import read_pdf
 from agent.token_classification import parse
+from base.models import BaseModel
 
 
 # Create your models here.
-class PDFAgent(models.Model):
-    id = models.AutoField(primary_key=True)
+class PDFAgent(BaseModel):
     status = models.IntegerField(default=0)
     pdf_cv_file = models.FileField(upload_to="pdf-cv")
-    name = models.CharField(max_length=250, null=True, blank=True)
+    name = models.TextField(null=True)
     email = models.EmailField(null=True)
-    mobile_number = models.CharField(max_length=100, null=True)
+    mobile_number = models.TextField(null=True)
     skills = models.JSONField(null=True)
-    college_name = models.CharField(max_length=250, null=True)
-    degree = models.CharField(max_length=250, null=True)
-    designation = models.CharField(max_length=250, null=True)
-    experience = models.CharField(max_length=250, null=True)
+    college_name = models.TextField(null=True)
+    degree = models.TextField(null=True)
+    designation = models.TextField(null=True)
+    experience = models.TextField(null=True)
     company_names = models.JSONField(null=True)
     no_of_pages = models.IntegerField(null=True)
     total_experience = models.IntegerField(null=True)
