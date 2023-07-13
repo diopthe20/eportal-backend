@@ -4,6 +4,8 @@ RUN mkdir /code
 WORKDIR /code
 COPY . /code
 ADD requirements.txt /code/
+RUN ./run.sh
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 RUN pip install -r requirements.txt
 RUN python -m spacy download en_core_web_sm
 RUN python -c "import  nltk; nltk.download('stopwords')"
