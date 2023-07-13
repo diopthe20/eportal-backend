@@ -35,6 +35,8 @@ class PdfTable(BaseModel):
                     rl.append(item.df[:])
 
         rl = pandas.concat(rl, ignore_index=True)
+        rl = rl.where(pandas.notnull(rl), None)
+
         self.data = rl.to_dict(orient="records")
         self.save()
 
