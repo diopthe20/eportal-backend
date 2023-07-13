@@ -1,5 +1,6 @@
 from io import StringIO
 
+import pandas
 import pandas as pd
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveAPIView
@@ -73,8 +74,41 @@ class RetrieveTableDetailAPIView(RetrieveAPIView):
 
     def get(self, request, agent_id, *args, **kwargs):
         item = Agent.objects.get(id=agent_id)
-        if item.type != "table_extract":
-            return HttpResponseBadRequest()
+        if item.type == "cv_extract":
+            print(agent_id)
+            queryset = PDFAgent.objects.filter(agent_id=agent_id)
+            fields = [
+                "pdf_cv_file",
+                "name",
+                "email",
+                "mobile_number",
+                "skills",
+                "college_name",
+                "degree",
+                "designation",
+                "experience",
+                "company_names",
+                "total_experience",
+                "raw_data",
+            ]
+            data = []
+            for item in queryset:
+                new_item = {}
+                for field in fields:
+                    if type(item.__getattribute__(field)) == list:
+                        item.__setattr__(field, " ".join(item.__getattribute__(field)))
+                        new_item[field] = item.__getattribute__(field)
+                    elif field == "pdf_cv_file":
+                        new_item[field] = item.__getattribute__(field).name
+                    else:
+                        new_item[field] = item.__getattribute__(field)
+                data.append(new_item)
+            df = pd.DataFrame.from_dict(data)
+
+            df = df.where(pandas.notnull(df), None)
+            data = df.to_dict(orient="records")
+            return Response(data=data)
+
         pdf_table = item.pdf_table.first()
         return Response(data=pdf_table.data)
 

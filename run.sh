@@ -1,4 +1,6 @@
+#!/usr/bin/env bash
+
 mkdir temp
 mk pdf-cv
-apt install -Y ghostscript python3-tk
+apt install ghostscript python3-tk
 pip install ghostscript
