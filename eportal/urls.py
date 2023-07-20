@@ -18,12 +18,6 @@ from django.urls import include, path
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
     path("api-auth/", include("rest_framework.urls")),
     path("api/v1/agents/", include("agent.customer.v1_0.urls")),
-    path(
-        "",
-        RedirectView.as_view(url="agent", permanent=False),
-    ),
-    path("agent/", include("agent.urls"), name="agent-home"),
 ]
