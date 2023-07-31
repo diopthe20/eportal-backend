@@ -4,8 +4,8 @@ RUN mkdir /code
 WORKDIR /code
 COPY . /code
 ADD requirements.txt /code/
-RUN ./run.sh
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6 -y
+RUN apt update
+RUN apt update && apt-get install ffmpeg libsm6 libxext6 -y
 RUN mkdir -p temp
 RUN mkdir -p output
 RUN mkdir -p pdf-cv
