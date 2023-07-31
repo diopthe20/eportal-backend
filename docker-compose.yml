@@ -14,29 +14,4 @@ services:
     image: redis
     expose:
       - "6379"
-  nginx:
-    restart: always
-    build: ./nginx/
-    ports:
-      - "8080:80"
-    volumes:
-      - /www/static/
-    volumes_from:
-      - web
-    links:
-      - web:web
-    depends_on:
-      - web
-  web:
-    restart: always
-    build: .
-    # command: python manage.py runserver 0.0.0.0:8000
-    command: gunicorn --bind 0.0.0.0:8000 eportal.wsgi:application
-    volumes:
-      - .:/code
-    expose:
-      - "8000"
-    depends_on:
-      - db
-    env_file:
-      - .env
+
