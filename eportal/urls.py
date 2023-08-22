@@ -16,8 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic.base import RedirectView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
     path("api/v1/agents/", include("agent.customer.v1_0.urls")),
-]
+    path("api/v1/user/convert/", include("convert.user.v1_0.urls")),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

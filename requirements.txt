@@ -89,3 +89,4 @@ google-auth-oauthlib
 gunicorn
 camelot-py[cv]
 PyPDF2
+python-dotenv
