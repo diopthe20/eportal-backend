@@ -17,7 +17,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # MEDIA_URL =
-MEDIA_ROOT = f"{BASE_DIR}/media"
+MEDIA_ROOT = f"{BASE_DIR}/media/"
 from dotenv import load_dotenv
 
 load_dotenv()

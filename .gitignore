@@ -3,3 +3,5 @@ venv/
 pdf-cv
 temp
 dev/
+media/data
+static/
