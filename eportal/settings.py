@@ -36,7 +36,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8080",
     "http://localhost:9000",
     "http://172.16.75.100:4000",
-    "httpss://ocr.etc.vn",
+    "https://ocr.etc.vn",
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
