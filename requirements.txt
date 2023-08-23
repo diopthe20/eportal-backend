@@ -90,3 +90,5 @@ gunicorn
 camelot-py[cv]
 PyPDF2
 python-dotenv
+PyMuPDF
+pdf2docx

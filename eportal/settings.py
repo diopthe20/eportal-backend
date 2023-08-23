@@ -28,12 +28,13 @@ load_dotenv()
 SECRET_KEY = "django-insecure-qwz34lkmhi_n^avg@55_0$=@ip91jc$1$31klgbzju9c-405u-"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["eportal.diopthe20.com", "localhost", "172.16.75.100", "ocr.etc.vn"]
 CSRF_TRUSTED_ORIGINS = [
     "https://eportal.diopthe20.com",
     "http://localhost:8080",
+    "http://localhost:9000",
     "http://172.16.75.100:4000",
     "httpss://ocr.etc.vn",
 ]
