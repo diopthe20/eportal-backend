@@ -1,7 +1,6 @@
 venv/
 *.pyc
 pdf-cv
-temp
 dev/
 media/data
 static/
