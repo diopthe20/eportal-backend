@@ -90,5 +90,5 @@ gunicorn
 camelot-py[cv]
 PyPDF2
 python-dotenv
-PyMuPDF
+PyMuPDF==1.22.5
 pdf2docx
