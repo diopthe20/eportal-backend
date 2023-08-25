@@ -4,3 +4,5 @@ pdf-cv
 dev/
 media/data
 static/
+output/
+temp/
